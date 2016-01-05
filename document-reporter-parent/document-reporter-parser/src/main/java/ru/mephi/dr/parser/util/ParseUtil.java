@@ -1,6 +1,7 @@
 package ru.mephi.dr.parser.util;
 
 import ru.mephi.dr.parser.constant.TablePosition;
+import ru.mephi.dr.parser.exception.TemplateException;
 
 public class ParseUtil {
 

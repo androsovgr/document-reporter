@@ -7,17 +7,16 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
+import ru.mephi.dr.parser.exception.ParseException;
+import ru.mephi.dr.parser.exception.TemplateException;
+import ru.mephi.dr.parser.model.Column;
 import ru.mephi.dr.parser.retriever.AttributeValueRetriever;
 import ru.mephi.dr.parser.template.Template;
 import ru.mephi.dr.parser.template.Template.Attribute;
-import ru.mephi.dr.parser.util.ParseException;
-import ru.mephi.dr.parser.util.TemplateException;
 
 public class DocumentParser {
 
@@ -25,23 +24,19 @@ public class DocumentParser {
 	private final Template template;
 
 	/**
-	 * Read DOCX document and template into memory.
+	 * Read DOCX document into memory and remember template.
 	 * 
-	 * @param filePath
+	 * @param documentFile
 	 * @param templatePath
 	 * @throws IOException
 	 * @throws JAXBException
 	 *             - if some troubles with template
 	 */
-	public DocumentParser(String filePath, String templatePath) throws IOException, JAXBException {
-		try (InputStream is = new FileInputStream(filePath)) {
+	public DocumentParser(File documentFile, Template template) throws IOException, JAXBException {
+		try (InputStream is = new FileInputStream(documentFile)) {
 			docx = new XWPFDocument(is);
 		}
-
-		File file = new File(templatePath);
-		JAXBContext jaxbContext = JAXBContext.newInstance(Template.class);
-		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-		template = (Template) jaxbUnmarshaller.unmarshal(file);
+		this.template = template;
 	}
 
 	/**
@@ -52,8 +47,8 @@ public class DocumentParser {
 	 * @throws ParseException
 	 * @throws TemplateException
 	 */
-	public Map<String, String> parse() throws ParseException, TemplateException {
-		Map<String, String> result = new HashMap<>();
+	public Map<Column, String> parse() throws ParseException, TemplateException {
+		Map<Column, String> result = new HashMap<>();
 		for (Attribute attribute : template.getAttribute()) {
 			try {
 				@SuppressWarnings("unchecked")
@@ -61,7 +56,8 @@ public class DocumentParser {
 						.forName(attribute.getRetrieverClass());
 				AttributeValueRetriever r = retrieverClass.newInstance();
 				String attrResult = r.retrieve(attribute.getParameter(), docx);
-				result.put(attribute.getKey(), attrResult);
+				Column col = new Column(attribute.getKey(), attribute.getLabel());
+				result.put(col, attrResult);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 				String message = String.format("Can't create instance of class %s for attribute %s",
 						attribute.getRetrieverClass(), attribute.getKey());

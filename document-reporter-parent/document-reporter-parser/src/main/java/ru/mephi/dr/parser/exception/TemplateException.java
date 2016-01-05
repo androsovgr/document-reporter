@@ -1,4 +1,4 @@
-package ru.mephi.dr.parser.util;
+package ru.mephi.dr.parser.exception;
 
 public class TemplateException extends Exception {
 

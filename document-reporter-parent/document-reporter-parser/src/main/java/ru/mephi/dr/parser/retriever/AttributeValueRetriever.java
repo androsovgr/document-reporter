@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
+import ru.mephi.dr.parser.exception.ParseException;
+import ru.mephi.dr.parser.exception.TemplateException;
 import ru.mephi.dr.parser.template.Template.Attribute.Parameter;
-import ru.mephi.dr.parser.util.ParseException;
-import ru.mephi.dr.parser.util.TemplateException;
 
 /**
  * Common interface for all beans which seek something at document and returns
