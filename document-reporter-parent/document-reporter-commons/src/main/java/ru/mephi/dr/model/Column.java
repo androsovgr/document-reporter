@@ -1,4 +1,4 @@
-package ru.mephi.dr.parser.model;
+package ru.mephi.dr.model;
 
 public class Column {
 

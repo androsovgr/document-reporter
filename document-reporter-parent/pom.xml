@@ -18,6 +18,8 @@
 		<module>document-reporter-ui</module>
 		<module>document-reporter-parser</module>
 		<module>document-reporter-template</module>
+		<module>document-reporter-writer</module>
+		<module>document-reporter-commons</module>
 	</modules>
 
 	<dependencies>

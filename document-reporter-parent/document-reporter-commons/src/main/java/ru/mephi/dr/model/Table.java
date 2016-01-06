@@ -1,4 +1,4 @@
-package ru.mephi.dr.parser.util;
+package ru.mephi.dr.model;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;

@@ -11,9 +11,9 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
+import ru.mephi.dr.model.Column;
 import ru.mephi.dr.parser.exception.ParseException;
 import ru.mephi.dr.parser.exception.TemplateException;
-import ru.mephi.dr.parser.model.Column;
 import ru.mephi.dr.parser.retriever.AttributeValueRetriever;
 import ru.mephi.dr.parser.template.Template;
 import ru.mephi.dr.parser.template.Template.Attribute;

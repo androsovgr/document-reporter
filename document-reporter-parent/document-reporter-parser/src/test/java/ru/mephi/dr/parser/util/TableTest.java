@@ -9,6 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import ru.mephi.dr.model.Table;
+
 public class TableTest {
 
 	@Test(dataProvider = "addMapDataProvider")

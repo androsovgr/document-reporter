@@ -10,12 +10,12 @@ import javax.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.mephi.dr.model.Column;
+import ru.mephi.dr.model.Table;
 import ru.mephi.dr.parser.DocumentFolderParser;
 import ru.mephi.dr.parser.exception.FileReadException;
 import ru.mephi.dr.parser.exception.ParseException;
 import ru.mephi.dr.parser.exception.TemplateException;
-import ru.mephi.dr.parser.model.Column;
-import ru.mephi.dr.parser.util.Table;
 
 public class DrUi {
 

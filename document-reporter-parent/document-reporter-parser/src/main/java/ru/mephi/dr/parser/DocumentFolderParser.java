@@ -15,13 +15,13 @@ import javax.xml.bind.Unmarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.mephi.dr.model.Column;
+import ru.mephi.dr.model.Table;
 import ru.mephi.dr.parser.exception.FileReadException;
 import ru.mephi.dr.parser.exception.TemplateException;
-import ru.mephi.dr.parser.model.Column;
 import ru.mephi.dr.parser.template.Template;
 import ru.mephi.dr.parser.template.Template.Attribute;
 import ru.mephi.dr.parser.util.FileNameFilter;
-import ru.mephi.dr.parser.util.Table;
 
 public class DocumentFolderParser {
 
