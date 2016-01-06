@@ -6,28 +6,18 @@
 		<artifactId>document-reporter-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>document-reporter-ui</artifactId>
+	<artifactId>document-reporter-writer</artifactId>
 
 	<dependencies>
 		<dependency>
 			<groupId>ru.mephi.dr</groupId>
-			<artifactId>document-reporter-parser</artifactId>
+			<artifactId>document-reporter-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>ru.mephi.dr</groupId>
-			<artifactId>document-reporter-writer</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
 		</dependency>
 	</dependencies>
 </project>
