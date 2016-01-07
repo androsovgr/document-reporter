@@ -20,6 +20,7 @@
 		<module>document-reporter-template</module>
 		<module>document-reporter-writer</module>
 		<module>document-reporter-commons</module>
+		<module>document-reporter-mail</module>
 	</modules>
 
 	<dependencies>
