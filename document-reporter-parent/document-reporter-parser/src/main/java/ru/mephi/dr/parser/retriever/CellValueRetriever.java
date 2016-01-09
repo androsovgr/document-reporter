@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -12,9 +13,9 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import ru.mephi.dr.parser.exception.ParseException;
 import ru.mephi.dr.parser.exception.TemplateException;
-import ru.mephi.dr.parser.template.Template.Attribute.Parameter;
 import ru.mephi.dr.parser.util.ParameterParser;
 import ru.mephi.dr.parser.util.ParseUtil;
+import ru.mephi.dr.xml.Template.Attribute.Parameter;
 
 /**
  * This class supports for retrieving value from some table of document.
@@ -30,7 +31,8 @@ import ru.mephi.dr.parser.util.ParseUtil;
  * <td>table-position</td>
  * <td>Position of target table in document.</td>
  * <td>1</td>
- * <td rowspan="4"><b>first</b>, <b>last</b> or number of decimal (starting from 1)</td>
+ * <td rowspan="4"><b>first</b>, <b>last</b> or number of decimal (starting from
+ * 1)</td>
  * </tr>
  * <tr>
  * <td>row-number</td>
@@ -78,7 +80,7 @@ public class CellValueRetriever implements AttributeValueRetriever {
 	private String linePosition;
 
 	@Override
-	public String retrieve(List<Parameter> parameters, XWPFDocument docx) throws ParseException, TemplateException {
+	public String retrieveDocx(List<Parameter> parameters, XWPFDocument docx) throws ParseException, TemplateException {
 		parseParameters(parameters);
 		String text = retrieveText(docx);
 		String parsed = parse(text);
@@ -128,6 +130,12 @@ public class CellValueRetriever implements AttributeValueRetriever {
 			throw new ParseException(message);
 		}
 		return docLine.getText();
+	}
+
+	@Override
+	public String retrieveDoc(List<Parameter> parameters, HWPFDocument doc) throws ParseException, TemplateException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private String parse(String text) throws ParseException, TemplateException {

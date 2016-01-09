@@ -15,8 +15,8 @@ import ru.mephi.dr.model.Column;
 import ru.mephi.dr.parser.exception.ParseException;
 import ru.mephi.dr.parser.exception.TemplateException;
 import ru.mephi.dr.parser.retriever.AttributeValueRetriever;
-import ru.mephi.dr.parser.template.Template;
-import ru.mephi.dr.parser.template.Template.Attribute;
+import ru.mephi.dr.xml.Template;
+import ru.mephi.dr.xml.Template.Attribute;
 
 public class DocumentParser {
 
@@ -55,7 +55,7 @@ public class DocumentParser {
 				Class<? extends AttributeValueRetriever> retrieverClass = (Class<? extends AttributeValueRetriever>) Class
 						.forName(attribute.getRetrieverClass());
 				AttributeValueRetriever r = retrieverClass.newInstance();
-				String attrResult = r.retrieve(attribute.getParameter(), docx);
+				String attrResult = r.retrieveDocx(attribute.getParameter(), docx);
 				Column col = new Column(attribute.getKey(), attribute.getLabel());
 				result.put(col, attrResult);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {

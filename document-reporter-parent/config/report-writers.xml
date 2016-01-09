@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report-writers>
+	<report-writer>
+		<id>docx</id>
+		<extention>docx</extention>
+		<writer-class>ru.mephi.dr.writer.DocxTableWriter</writer-class>
+	</report-writer>
+	<report-writer>
+		<id>xlsx</id>
+		<extention>xlsx</extention>
+		<writer-class>ru.mephi.dr.writer.XslxTableWriter</writer-class>
+	</report-writer>
+</report-writers>

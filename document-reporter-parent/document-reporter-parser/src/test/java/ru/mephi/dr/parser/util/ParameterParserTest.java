@@ -7,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import ru.mephi.dr.parser.template.Template.Attribute.Parameter;
+import ru.mephi.dr.xml.Template.Attribute.Parameter;
 
 public class ParameterParserTest {
 

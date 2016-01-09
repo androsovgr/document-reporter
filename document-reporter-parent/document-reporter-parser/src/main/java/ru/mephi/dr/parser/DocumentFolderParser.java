@@ -2,12 +2,9 @@ package ru.mephi.dr.parser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -19,9 +16,8 @@ import ru.mephi.dr.model.Column;
 import ru.mephi.dr.model.Table;
 import ru.mephi.dr.parser.exception.FileReadException;
 import ru.mephi.dr.parser.exception.TemplateException;
-import ru.mephi.dr.parser.template.Template;
-import ru.mephi.dr.parser.template.Template.Attribute;
-import ru.mephi.dr.parser.util.FileNameFilter;
+import ru.mephi.dr.xml.Template;
+import ru.mephi.dr.xml.Template.Attribute;
 
 public class DocumentFolderParser {
 
@@ -29,7 +25,6 @@ public class DocumentFolderParser {
 
 	private final File folder;
 	private final Template template;
-	private final Pattern fileNamePattern;
 
 	/**
 	 * Make prepare for parsing.
@@ -43,21 +38,16 @@ public class DocumentFolderParser {
 	 *            path to directory with source files.
 	 * @param templatePath
 	 *            path to template for source files.
-	 * @param fileMask
-	 *            regular expression for source files name.
 	 * @throws FileNotFoundException
 	 *             if can't find template or source folder
 	 * @throws FileReadException
 	 *             if folder exists but can't read it.
 	 * @throws TemplateException
 	 *             if can't parse template.
-	 * @throws PatternSyntaxException
-	 *             if file name pattern is incorrect regular expression
 	 */
-	public DocumentFolderParser(String folderPath, String templatePath, String fileMask)
-			throws FileNotFoundException, FileReadException, TemplateException, PatternSyntaxException {
-		LOGGER.info("Init folder parser with folderPath={}, templatePath={}, fileMask={}", folderPath, templatePath,
-				fileMask);
+	public DocumentFolderParser(String folderPath, String templatePath)
+			throws FileNotFoundException, FileReadException, TemplateException {
+		LOGGER.info("Init folder parser with folderPath={}, templatePath={}", folderPath, templatePath);
 		this.folder = new File(folderPath);
 		if (!folder.exists() || !folder.isDirectory()) {
 			String message = String.format("Can't find directory with name %s", folderPath);
@@ -76,7 +66,6 @@ public class DocumentFolderParser {
 			String message = String.format("Can't parse template %s", templatePath);
 			throw new TemplateException(message, e);
 		}
-		fileNamePattern = Pattern.compile(fileMask);
 	}
 
 	/**
@@ -89,8 +78,7 @@ public class DocumentFolderParser {
 	public Table<Column, String> parse() {
 		LOGGER.info("Started parsing");
 		Table<Column, String> result = new Table<>(String.class, getColumns());
-		FilenameFilter fnf = new FileNameFilter(fileNamePattern);
-		for (File documentFile : folder.listFiles(fnf)) {
+		for (File documentFile : folder.listFiles()) {
 			try {
 				DocumentParser dp = new DocumentParser(documentFile, template);
 				Map<Column, String> parseResult = dp.parse();

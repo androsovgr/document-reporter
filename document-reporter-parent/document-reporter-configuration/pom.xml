@@ -6,32 +6,18 @@
 		<artifactId>document-reporter-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>document-reporter-mail</artifactId>
+	<artifactId>document-reporter-configuration</artifactId>
+
 	<dependencies>
-		<dependency>
-			<groupId>ru.mephi.dr</groupId>
-			<artifactId>document-reporter-commons</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>ru.mephi.dr</groupId>
 			<artifactId>document-reporter-xml</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>ru.mephi.dr</groupId>
-			<artifactId>document-reporter-configuration</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>javax.mail-api</artifactId>
-			<version>1.5.5</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>1.5.5</version>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.10</version>
 		</dependency>
 	</dependencies>
 </project>

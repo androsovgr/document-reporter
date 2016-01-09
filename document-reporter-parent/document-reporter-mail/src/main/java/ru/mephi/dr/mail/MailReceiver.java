@@ -2,7 +2,6 @@ package ru.mephi.dr.mail;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -17,14 +16,21 @@ import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.mail.search.AndTerm;
 import javax.mail.search.ComparisonTerm;
 import javax.mail.search.ReceivedDateTerm;
 import javax.mail.search.SearchTerm;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ru.mephi.dr.mail.util.MyReceivedDateTerm;
+import ru.mephi.dr.model.util.FileUtils;
 
 public class MailReceiver {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MailReceiver.class);
 
 	private final String username;
 	private final String password;
@@ -40,7 +46,7 @@ public class MailReceiver {
 	 * @param propertyLocation
 	 *            - location of property file with mail connection properties
 	 * @throws IOException
-	 *             - if some troubles with property file
+	 *             if some troubles with property file
 	 */
 	public MailReceiver(String username, String password, String propertyLocation) throws IOException {
 		super();
@@ -97,10 +103,16 @@ public class MailReceiver {
 	private Date saveFiles(Store store, Date startLoadDate, String folderName) throws MessagingException, IOException {
 		Folder mailFolder = store.getFolder("INBOX");
 		mailFolder.open(Folder.READ_ONLY);
+		// first term receives all younger this date (not time)
 		SearchTerm dateTerm = new ReceivedDateTerm(ComparisonTerm.GE, startLoadDate);
-		Message[] sResult = mailFolder.search(dateTerm);
+		// second term really sorts by time
+		MyReceivedDateTerm myDateTerm = new MyReceivedDateTerm(ComparisonTerm.GT, startLoadDate);
+		SearchTerm term = new AndTerm(dateTerm, myDateTerm);
+		Message[] sResult = mailFolder.search(term);
 		File folder = new File(folderName);
+		FileUtils.checkDirectory(folder);
 		Date resultDate = startLoadDate;
+		int received = 0;
 		for (Message message : sResult) {
 			if (StringUtils.startsWith(message.getContentType(), "multipart")) {
 				Multipart multipart = (Multipart) message.getContent();
@@ -116,17 +128,17 @@ public class MailReceiver {
 						continue;
 					}
 					InputStream is = bodyPart.getInputStream();
-					File f = new File(folder, bodyPart.getFileName());
-					try (FileOutputStream fos = new FileOutputStream(f)) {
-						IOUtils.copy(is, fos);
-					}
+					File saved = FileUtils.createFile(is, folder, bodyPart.getFileName());
 					Date rd = message.getReceivedDate();
 					if (resultDate.before(rd)) {
 						resultDate = rd;
 					}
+					LOGGER.debug("Saved {} file", saved);
+					received++;
 				}
 			}
 		}
+		LOGGER.info("Totally received {} files. Newest attachment: {}", received, resultDate);
 		return resultDate;
 	}
 

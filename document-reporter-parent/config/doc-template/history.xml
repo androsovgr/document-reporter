@@ -70,7 +70,7 @@
 		retrieverClass="ru.mephi.dr.parser.retriever.CellValueRetriever">
 		<parameter>
 			<key>expression</key>
-			<value>(.*)</value>
+			<value>Выполнил: (.*)</value>
 		</parameter>
 		<parameter>
 			<key>table-position</key>

@@ -5,7 +5,7 @@
 			<xs:sequence>
 				<xs:element name="attribute" maxOccurs="unbounded"
 					minOccurs="0">
-					<xs:complexType mixed="true">
+					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="parameter" maxOccurs="unbounded"
 								minOccurs="0">

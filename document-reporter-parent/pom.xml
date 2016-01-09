@@ -17,10 +17,11 @@
 	<modules>
 		<module>document-reporter-ui</module>
 		<module>document-reporter-parser</module>
-		<module>document-reporter-template</module>
+		<module>document-reporter-xml</module>
 		<module>document-reporter-writer</module>
 		<module>document-reporter-commons</module>
 		<module>document-reporter-mail</module>
+		<module>document-reporter-configuration</module>
 	</modules>
 
 	<dependencies>
@@ -34,6 +35,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

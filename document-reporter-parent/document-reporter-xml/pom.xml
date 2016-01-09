@@ -6,7 +6,7 @@
 		<artifactId>document-reporter-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>document-reporter-template</artifactId>
+	<artifactId>document-reporter-xml</artifactId>
 
 	<dependencies>
 		<dependency>
@@ -58,18 +58,22 @@
 				</dependencies>
 				<executions>
 					<execution>
-						<id>xjc</id>
+						<id>template</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>xjc</goal>
 						</goals>
+						<configuration>
+							<packageName>ru.mephi.dr.xml</packageName>
+							<sources>
+								<source>${project.parent.basedir}/config/doc-template/template.xsd</source>
+								<source>${project.parent.basedir}/config/report-writers.xsd</source>
+								<source>${project.parent.basedir}/config/sortings.xsd</source>
+							</sources>
+						</configuration>
 					</execution>
 				</executions>
 				<configuration>
-					<packageName>ru.mephi.dr.parser.template</packageName>
-					<sources>
-						<source>${project.basedir}/src/main/resources/template.xsd</source>
-					</sources>
 					<extension>true</extension>
 					<arguments>
 						<argument>-XtoString</argument>
