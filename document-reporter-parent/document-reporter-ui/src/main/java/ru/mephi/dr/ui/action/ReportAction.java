@@ -58,7 +58,7 @@ public class ReportAction {
 				LOGGER.info("Saved report {} contains information about {} essays", report.getAbsolutePath(),
 						table.size());
 			} catch (Exception e) {
-				LOGGER.error("Can't make report for folder {}", dir.getAbsolutePath());
+				LOGGER.error("Can't make report for folder {}", dir.getAbsolutePath(), e);
 			}
 		}
 	}

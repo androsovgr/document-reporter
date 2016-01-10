@@ -8,6 +8,11 @@
 	<report-writer>
 		<id>xlsx</id>
 		<extention>xlsx</extention>
-		<writer-class>ru.mephi.dr.writer.XslxTableWriter</writer-class>
+		<writer-class>ru.mephi.dr.writer.XlsxTableWriter</writer-class>
+	</report-writer>
+	<report-writer>
+		<id>xls</id>
+		<extention>xls</extention>
+		<writer-class>ru.mephi.dr.writer.XlsTableWriter</writer-class>
 	</report-writer>
 </report-writers>
