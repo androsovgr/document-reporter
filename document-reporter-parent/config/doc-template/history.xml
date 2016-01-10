@@ -3,118 +3,140 @@
 	xsi:schemaLocation="template.xsd">
 	<attribute key="tittle" label="Название реферата"
 		retrieverClass="ru.mephi.dr.parser.retriever.CellValueRetriever">
-		<parameter>
-			<key>expression</key>
-			<value>(.*)</value>
-		</parameter>
-		<parameter>
-			<key>table-position</key>
-			<value>first</value>
-		</parameter>
-		<parameter>
-			<key>row-number</key>
-			<value>2</value>
-		</parameter>
-		<parameter>
-			<key>column-number</key>
-			<value>1</value>
-		</parameter>
+		<parameters>
+			<parameter>
+				<key>expression</key>
+				<value>(.*)</value>
+			</parameter>
+			<parameter>
+				<key>table-position</key>
+				<value>first</value>
+			</parameter>
+			<parameter>
+				<key>row-number</key>
+				<value>2</value>
+			</parameter>
+			<parameter>
+				<key>column-number</key>
+				<value>1</value>
+			</parameter>
+		</parameters>
 	</attribute>
 	<attribute key="subject" label="Предмет"
-		retrieverClass="ru.mephi.dr.parser.retriever.CellValueRetriever">
-		<parameter>
-			<key>expression</key>
-			<value>Реферат по (.*) аспиранта кафедры.*</value>
-		</parameter>
-		<parameter>
-			<key>table-position</key>
-			<value>first</value>
-		</parameter>
-		<parameter>
-			<key>row-number</key>
-			<value>3</value>
-		</parameter>
-		<parameter>
-			<key>column-number</key>
-			<value>1</value>
-		</parameter>
-		<parameter>
-			<key>line</key>
-			<value>2</value>
-		</parameter>
+		retrieverClass="ru.mephi.dr.parser.retriever.CellValueRetriever"
+		silence="true">
+		<parameters>
+			<parameter>
+				<key>expression</key>
+				<value>Реферат по (.*) аспиранта кафедры.*</value>
+			</parameter>
+			<parameter>
+				<key>table-position</key>
+				<value>first</value>
+			</parameter>
+			<parameter>
+				<key>row-number</key>
+				<value>3</value>
+			</parameter>
+			<parameter>
+				<key>column-number</key>
+				<value>1</value>
+			</parameter>
+			<parameter>
+				<key>line</key>
+				<value>2</value>
+			</parameter>
+		</parameters>
+		<validators>
+			<validator validatorClass="ru.mephi.dr.parser.validator.ValueLikeValdator"
+				validatorMessage="Тема реферата неправильная">
+				<parameters>
+					<parameter>
+						<key>regexp</key>
+						<value>истори.? наук.?</value>
+					</parameter>
+				</parameters>
+			</validator>
+		</validators>
 	</attribute>
 	<attribute key="department" label="Кафедра"
 		retrieverClass="ru.mephi.dr.parser.retriever.CellValueRetriever">
-		<parameter>
-			<key>expression</key>
-			<value>.*кафедры №?(.*)</value>
-		</parameter>
-		<parameter>
-			<key>table-position</key>
-			<value>first</value>
-		</parameter>
-		<parameter>
-			<key>row-number</key>
-			<value>3</value>
-		</parameter>
-		<parameter>
-			<key>column-number</key>
-			<value>1</value>
-		</parameter>
-		<parameter>
-			<key>line</key>
-			<value>2</value>
-		</parameter>
+		<parameters>
+			<parameter>
+				<key>expression</key>
+				<value>.*кафедры №?(.*)</value>
+			</parameter>
+			<parameter>
+				<key>table-position</key>
+				<value>first</value>
+			</parameter>
+			<parameter>
+				<key>row-number</key>
+				<value>3</value>
+			</parameter>
+			<parameter>
+				<key>column-number</key>
+				<value>1</value>
+			</parameter>
+			<parameter>
+				<key>line</key>
+				<value>2</value>
+			</parameter>
+		</parameters>
 	</attribute>
 	<attribute key="name" label="Имя аспиранта"
 		retrieverClass="ru.mephi.dr.parser.retriever.CellValueRetriever">
-		<parameter>
-			<key>expression</key>
-			<value>Выполнил: (.*)</value>
-		</parameter>
-		<parameter>
-			<key>table-position</key>
-			<value>first</value>
-		</parameter>
-		<parameter>
-			<key>row-number</key>
-			<value>3</value>
-		</parameter>
-		<parameter>
-			<key>column-number</key>
-			<value>1</value>
-		</parameter>
-		<parameter>
-			<key>line</key>
-			<value>3</value>
-		</parameter>
+		<parameters>
+			<parameter>
+				<key>expression</key>
+				<value>Выполнил: (.*)</value>
+			</parameter>
+			<parameter>
+				<key>table-position</key>
+				<value>first</value>
+			</parameter>
+			<parameter>
+				<key>row-number</key>
+				<value>3</value>
+			</parameter>
+			<parameter>
+				<key>column-number</key>
+				<value>1</value>
+			</parameter>
+			<parameter>
+				<key>line</key>
+				<value>3</value>
+			</parameter>
+		</parameters>
 	</attribute>
 	<attribute key="specialty" label="Специальность аспиранта"
 		retrieverClass="ru.mephi.dr.parser.retriever.CellValueRetriever">
-		<parameter>
-			<key>expression</key>
-			<value>(С|с).*(\d\d\.\d\d\.\d\d)</value>
-		</parameter>
-		<parameter>
-			<key>expression-group-number</key>
-			<value>2</value>
-		</parameter>
-		<parameter>
-			<key>table-position</key>
-			<value>first</value>
-		</parameter>
-		<parameter>
-			<key>row-number</key>
-			<value>3</value>
-		</parameter>
-		<parameter>
-			<key>column-number</key>
-			<value>1</value>
-		</parameter>
-		<parameter>
-			<key>line</key>
-			<value>4</value>
-		</parameter>
+		<parameters>
+			<parameter>
+				<key>expression</key>
+				<value>(С|с).*(\d\d\.\d\d\.\d\d)</value>
+			</parameter>
+			<parameter>
+				<key>expression-group-number</key>
+				<value>2</value>
+			</parameter>
+			<parameter>
+				<key>table-position</key>
+				<value>first</value>
+			</parameter>
+			<parameter>
+				<key>row-number</key>
+				<value>3</value>
+			</parameter>
+			<parameter>
+				<key>column-number</key>
+				<value>1</value>
+			</parameter>
+			<parameter>
+				<key>line</key>
+				<value>4</value>
+			</parameter>
+		</parameters>
 	</attribute>
 	<attribute key="pageCount" label="Количество страниц"
 		retrieverClass="ru.mephi.dr.parser.retriever.PageCountRetriever" />

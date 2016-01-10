@@ -15,7 +15,7 @@ import ru.mephi.dr.parser.exception.ParseException;
 import ru.mephi.dr.parser.exception.TemplateException;
 import ru.mephi.dr.parser.util.ParameterParser;
 import ru.mephi.dr.parser.util.ParseUtil;
-import ru.mephi.dr.xml.Template.Attribute.Parameter;
+import ru.mephi.dr.xml.Template.Attribute.Parameters.Parameter;
 
 /**
  * This class supports for retrieving value from some table of document.

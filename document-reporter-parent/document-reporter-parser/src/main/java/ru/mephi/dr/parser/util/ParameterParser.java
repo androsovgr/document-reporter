@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ru.mephi.dr.xml.Template.Attribute.Parameter;
+import ru.mephi.dr.xml.Template.Attribute.Parameters.Parameter;
 
 public class ParameterParser {
 

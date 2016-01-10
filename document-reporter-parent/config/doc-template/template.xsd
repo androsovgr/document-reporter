@@ -7,12 +7,48 @@
 					minOccurs="0">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="parameter" maxOccurs="unbounded"
-								minOccurs="0">
+							<xs:element name="parameters" minOccurs="0" nillable="false">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element type="xs:string" name="key" />
-										<xs:element type="xs:string" name="value" />
+										<xs:element name="parameter" maxOccurs="unbounded"
+											minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element type="xs:string" name="key" />
+													<xs:element type="xs:string" name="value" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="validators" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="validator" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="parameters">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="parameter" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element type="xs:string" name="key" />
+																			<xs:element type="xs:string" name="value" />
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute type="xs:string" name="validatorClass"
+													use="required" />
+												<xs:attribute type="xs:string" name="validatorMessage"
+													use="required" />
+											</xs:complexType>
+										</xs:element>
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
@@ -21,6 +57,8 @@
 						<xs:attribute type="xs:string" name="label" use="optional" />
 						<xs:attribute type="xs:string" name="retrieverClass"
 							use="optional" />
+						<xs:attribute type="xs:boolean" name="silence" use="optional"
+							default="false" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

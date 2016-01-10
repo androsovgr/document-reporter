@@ -16,6 +16,7 @@ import ru.mephi.dr.model.Column;
 import ru.mephi.dr.model.Table;
 import ru.mephi.dr.parser.exception.FileReadException;
 import ru.mephi.dr.parser.exception.TemplateException;
+import ru.mephi.dr.parser.exception.ValidateException;
 import ru.mephi.dr.xml.Template;
 import ru.mephi.dr.xml.Template.Attribute;
 
@@ -83,6 +84,8 @@ public class DocumentFolderParser {
 				DocumentParser dp = new DocumentParser(documentFile, template);
 				Map<Column, String> parseResult = dp.parse();
 				result.add(parseResult);
+			} catch (ValidateException e) {
+				LOGGER.warn("Can't parse file {}. {}", documentFile, e.getMessage());
 			} catch (Exception e) {
 				LOGGER.error("Can't parse file {}", documentFile, e);
 			}
@@ -94,7 +97,9 @@ public class DocumentFolderParser {
 	private Column[] getColumns() {
 		List<Column> result = new ArrayList<>();
 		for (Attribute attr : template.getAttribute()) {
-			result.add(new Column(attr.getKey(), attr.getLabel()));
+			if (!attr.isSilence()) {
+				result.add(new Column(attr.getKey(), attr.getLabel()));
+			}
 		}
 		return result.toArray(new Column[0]);
 	}

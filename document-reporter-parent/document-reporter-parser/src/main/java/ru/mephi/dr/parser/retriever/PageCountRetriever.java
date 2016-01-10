@@ -7,7 +7,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import ru.mephi.dr.parser.exception.ParseException;
 import ru.mephi.dr.parser.exception.TemplateException;
-import ru.mephi.dr.xml.Template.Attribute.Parameter;
+import ru.mephi.dr.xml.Template.Attribute.Parameters.Parameter;
 
 /**
  * This class supports for retrieving document's pages count.
