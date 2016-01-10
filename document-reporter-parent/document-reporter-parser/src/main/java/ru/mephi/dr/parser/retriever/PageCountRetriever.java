@@ -25,8 +25,8 @@ public class PageCountRetriever implements AttributeValueRetriever {
 
 	@Override
 	public String retrieveDoc(List<Parameter> parameters, HWPFDocument doc) throws ParseException, TemplateException {
-		// TODO Auto-generated method stub
-		return null;
+		int pageCount = doc.getSummaryInformation().getPageCount();
+		return pageCount + "";
 	}
 
 }

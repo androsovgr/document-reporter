@@ -11,6 +11,9 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import ru.mephi.dr.model.Column;
@@ -27,7 +30,9 @@ import ru.mephi.dr.xml.Template.Attribute.Validators.Validator;
 public class DocumentParser {
 
 	private final XWPFDocument docx;
+	private final HWPFDocument doc;
 	private final Template template;
+	private final DocumentType documentType;
 
 	/**
 	 * Read DOCX document into memory and remember template.
@@ -39,8 +44,22 @@ public class DocumentParser {
 	 *             - if some troubles with template
 	 */
 	public DocumentParser(File documentFile, Template template) throws IOException, JAXBException {
-		try (InputStream is = new FileInputStream(documentFile)) {
-			docx = new XWPFDocument(is);
+		String extention = FilenameUtils.getExtension(documentFile.getName());
+		if (StringUtils.equalsIgnoreCase(extention, "docx")) {
+			try (InputStream is = new FileInputStream(documentFile)) {
+				docx = new XWPFDocument(is);
+				doc = null;
+				documentType = DocumentType.DOCX;
+			}
+		} else if (StringUtils.equalsIgnoreCase(extention, "doc")) {
+			try (InputStream is = new FileInputStream(documentFile)) {
+				doc = new HWPFDocument(is);
+				docx = null;
+				documentType = DocumentType.DOC;
+			}
+		} else {
+			String message = String.format("Unsupported extention %s", extention);
+			throw new RuntimeException(message);
 		}
 		this.template = template;
 	}
@@ -74,7 +93,12 @@ public class DocumentParser {
 				} else {
 					parameters = attribute.getParameters().getParameter();
 				}
-				String attrResult = r.retrieveDocx(parameters, docx);
+				String attrResult;
+				if (documentType == DocumentType.DOCX) {
+					attrResult = r.retrieveDocx(parameters, docx);
+				} else {
+					attrResult = r.retrieveDoc(parameters, doc);
+				}
 				Column col = new Column(attribute.getKey(), attribute.getLabel());
 				result.put(col, attrResult);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
@@ -122,5 +146,9 @@ public class DocumentParser {
 				result.remove(attributeCol);
 			}
 		}
+	}
+
+	private static enum DocumentType {
+		DOC, DOCX
 	}
 }

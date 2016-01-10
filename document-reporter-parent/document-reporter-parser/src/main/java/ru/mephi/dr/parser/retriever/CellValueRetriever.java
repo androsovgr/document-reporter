@@ -4,7 +4,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.usermodel.Paragraph;
+import org.apache.poi.hwpf.usermodel.Table;
+import org.apache.poi.hwpf.usermodel.TableCell;
+import org.apache.poi.hwpf.usermodel.TableRow;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -13,8 +18,12 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import ru.mephi.dr.parser.exception.ParseException;
 import ru.mephi.dr.parser.exception.TemplateException;
+import ru.mephi.dr.parser.util.MyTableIterator;
+import ru.mephi.dr.parser.util.ParagraphList;
 import ru.mephi.dr.parser.util.ParameterParser;
 import ru.mephi.dr.parser.util.ParseUtil;
+import ru.mephi.dr.parser.util.TableCellList;
+import ru.mephi.dr.parser.util.TableRowList;
 import ru.mephi.dr.xml.Template.Attribute.Parameters.Parameter;
 
 /**
@@ -82,7 +91,11 @@ public class CellValueRetriever implements AttributeValueRetriever {
 	@Override
 	public String retrieveDocx(List<Parameter> parameters, XWPFDocument docx) throws ParseException, TemplateException {
 		parseParameters(parameters);
-		String text = retrieveText(docx);
+		XWPFTable table = getAtPosition(tablePosition, docx.getTables(), XWPFTable.class);
+		XWPFTableRow row = getAtPosition(rowPosition, table.getRows(), XWPFTableRow.class);
+		XWPFTableCell docCell = getAtPosition(columnPosition, row.getTableCells(), XWPFTableCell.class);
+		XWPFParagraph docLine = getAtPosition(linePosition, docCell.getParagraphs(), XWPFParagraph.class);
+		String text = docLine.getText();
 		String parsed = parse(text);
 		return parsed;
 	}
@@ -96,50 +109,27 @@ public class CellValueRetriever implements AttributeValueRetriever {
 		linePosition = ParameterParser.getParameter(parameters, "line", "1");
 	}
 
-	private String retrieveText(XWPFDocument docx) throws ParseException, TemplateException {
-		int tableNumber = ParseUtil.parsePosition(tablePosition, docx.getTables().size());
-		XWPFTable table;
-		try {
-			table = docx.getTables().get(tableNumber);
-		} catch (IndexOutOfBoundsException e) {
-			String message = String.format("Can't find table with position %s at document ", tablePosition);
-			throw new ParseException(message);
-		}
-		int rowNumber = ParseUtil.parsePosition(rowPosition, table.getRows().size());
-		XWPFTableRow row;
-		try {
-			row = table.getRow(rowNumber);
-		} catch (IndexOutOfBoundsException e) {
-			String message = String.format("Can't find row with position %s at document", rowPosition);
-			throw new ParseException(message);
-		}
-		int columnNumber = ParseUtil.parsePosition(columnPosition, row.getTableCells().size());
-		XWPFTableCell docCell;
-		try {
-			docCell = row.getTableCells().get(columnNumber);
-		} catch (IndexOutOfBoundsException e) {
-			String message = String.format("Can't find cell with position %s at document", columnPosition);
-			throw new ParseException(message);
-		}
-		int lineNumber = ParseUtil.parsePosition(linePosition, docCell.getParagraphs().size());
-		XWPFParagraph docLine;
-		try {
-			docLine = docCell.getParagraphs().get(lineNumber);
-		} catch (IndexOutOfBoundsException e) {
-			String message = String.format("Can't find line with position %s at document", linePosition);
-			throw new ParseException(message);
-		}
-		return docLine.getText();
-	}
-
 	@Override
 	public String retrieveDoc(List<Parameter> parameters, HWPFDocument doc) throws ParseException, TemplateException {
-		// TODO Auto-generated method stub
-		return null;
+		parseParameters(parameters);
+		MyTableIterator mti = new MyTableIterator(doc);
+		List<Table> tables = IteratorUtils.toList(mti);
+		Table table = getAtPosition(tablePosition, tables, Table.class);
+		TableRowList trl = new TableRowList(table);
+		TableRow row = getAtPosition(rowPosition, trl, TableRow.class);
+		TableCellList tcl = new TableCellList(row);
+		TableCell docCell = getAtPosition(columnPosition, tcl, TableCell.class);
+		ParagraphList pl = new ParagraphList(docCell);
+		Paragraph paragraph = getAtPosition(linePosition, pl, Paragraph.class);
+		String text = paragraph.text();
+		String parsed = parse(text);
+		return parsed;
 	}
 
 	private String parse(String text) throws ParseException, TemplateException {
 		Pattern p = Pattern.compile(expression);
+		// for doc compatibility
+		text = text.trim();
 		Matcher m = p.matcher(text);
 		if (!m.matches()) {
 			String message = String.format("Value %s doesnt matches pattern %s", text, expression);
@@ -153,6 +143,18 @@ public class CellValueRetriever implements AttributeValueRetriever {
 			throw new TemplateException(message);
 		}
 		return result;
+	}
+
+	private <T> T getAtPosition(String position, List<T> list, Class<T> claz) throws TemplateException, ParseException {
+		int positionNumber = ParseUtil.parsePosition(position, list.size());
+		T t;
+		try {
+			t = list.get(positionNumber);
+			return t;
+		} catch (IndexOutOfBoundsException e) {
+			String message = String.format("Can't find %s at position %s", claz, position);
+			throw new ParseException(message);
+		}
 	}
 
 }
