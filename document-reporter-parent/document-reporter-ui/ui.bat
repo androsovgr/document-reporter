@@ -1,1 +1,1 @@
-java -jar ${project.build.finalName}.jar
+java -Dapplication.directory=%~dp0 -jar ${project.build.finalName}.jar 
