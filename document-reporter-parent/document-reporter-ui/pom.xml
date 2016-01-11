@@ -121,6 +121,22 @@
 							</resources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>copy-doc</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/docs</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.parent.basedir}/docs</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
