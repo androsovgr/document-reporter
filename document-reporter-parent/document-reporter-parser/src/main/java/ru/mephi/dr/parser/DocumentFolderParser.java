@@ -72,7 +72,8 @@ public class DocumentFolderParser {
 	/**
 	 * Parse folder and return result. </br>
 	 * Write WARN logs if directory contains files with wrong pattern name</br>
-	 * Write ERROR logs for each file parse error.
+	 * Write ERROR logs for each file parse error.</br>
+	 * If troubles with template, returns.
 	 * 
 	 * @return {@link Table} - with labels at columns and parsed data inside
 	 */
@@ -86,6 +87,9 @@ public class DocumentFolderParser {
 				result.add(parseResult);
 			} catch (ValidateException e) {
 				LOGGER.warn("Can't parse file {}. {}", documentFile, e.getMessage());
+			} catch (TemplateException e) {
+				LOGGER.error("Some troubles with template for file {}", documentFile, e);
+				break;
 			} catch (Exception e) {
 				LOGGER.error("Can't parse file {}", documentFile, e);
 			}

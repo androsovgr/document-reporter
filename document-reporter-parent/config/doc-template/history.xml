@@ -138,6 +138,15 @@
 			</parameter>
 		</parameters>
 	</attribute>
+	<attribute key="specialty" label="Количество источников"
+		retrieverClass="ru.mephi.dr.parser.retriever.SourceCountRetiever">
+		<parameters>
+			<parameter>
+				<key>header-parttern</key>
+				<value>(С|с)писок использованной литературы</value>
+			</parameter>
+		</parameters>
+	</attribute>
 	<attribute key="pageCount" label="Количество страниц"
 		retrieverClass="ru.mephi.dr.parser.retriever.PageCountRetriever" />
 </template>
