@@ -38,7 +38,7 @@ public class DocumentParser {
 	 * Read DOCX document into memory and remember template.
 	 * 
 	 * @param documentFile
-	 * @param templatePath
+	 * @param template
 	 * @throws IOException
 	 * @throws JAXBException
 	 *             - if some troubles with template

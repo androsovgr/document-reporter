@@ -70,10 +70,9 @@ public class DocumentFolderParser {
 	}
 
 	/**
-	 * Parse folder and return result. </br>
-	 * Write WARN logs if directory contains files with wrong pattern name</br>
-	 * Write ERROR logs for each file parse error.</br>
-	 * If troubles with template, returns.
+	 * Parse folder and return result. Write WARN logs if directory contains
+	 * files with wrong pattern name. Write ERROR logs for each file parse
+	 * error. If troubles with template, returns.
 	 * 
 	 * @return {@link Table} - with labels at columns and parsed data inside
 	 */
