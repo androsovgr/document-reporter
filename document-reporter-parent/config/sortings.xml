@@ -2,12 +2,12 @@
 <sortings>
 	<sorting>
 		<id>history</id>
-		<name-pattern>history.*\.docx?</name-pattern>
+		<name-pattern>hist.*\.docx?</name-pattern>
 		<folder>history</folder>
 	</sorting>
 	<sorting>
 		<id>phylosophy</id>
-		<name-pattern>phylosophy.*\.docx?</name-pattern>
+		<name-pattern>phil.*\.docx?</name-pattern>
 		<folder>phylosophy</folder>
 	</sorting>
 </sortings>
