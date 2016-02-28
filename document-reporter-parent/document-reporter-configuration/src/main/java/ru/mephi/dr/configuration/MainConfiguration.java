@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Date;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
@@ -62,6 +61,26 @@ public class MainConfiguration {
 	public Date getLastLodadedFileDate() {
 		long time = configuration.getLong("work.lastload", 0);
 		return new Date(time);
+	}
+
+	public void setEmailLogin(String login) throws ConfigurationException {
+		configuration.setProperty("email.login", login);
+		configuration.save();
+	}
+
+	public void setEmailPassword(String password) throws ConfigurationException {
+		configuration.setProperty("email.password", password);
+		configuration.save();
+	}
+
+	public void setEmailType(String emailType) throws ConfigurationException {
+		configuration.setProperty("email.type", emailType);
+		configuration.save();
+	}
+
+	public void setWorkFolder(File folder) throws ConfigurationException {
+		configuration.setProperty("work.folder", folder.getAbsolutePath());
+		configuration.save();
 	}
 
 	public void setLastLodadedFileDate(Date date) throws ConfigurationException {
