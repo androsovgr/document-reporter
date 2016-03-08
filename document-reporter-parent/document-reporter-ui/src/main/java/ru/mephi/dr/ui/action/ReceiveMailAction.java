@@ -9,6 +9,8 @@ import javax.mail.MessagingException;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ru.mephi.dr.configuration.MainConfiguration;
 import ru.mephi.dr.configuration.SortingConfigurations;
@@ -17,6 +19,8 @@ import ru.mephi.dr.mail.MailReceiver;
 import ru.mephi.dr.mail.MailSorter;
 
 public class ReceiveMailAction {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReceiveMailAction.class);
 
 	private final MainConfiguration mc;
 	private final SortingConfigurations sc;
@@ -27,6 +31,7 @@ public class ReceiveMailAction {
 	}
 
 	public void action() throws IOException, MessagingException, ConfigurationException {
+		LOGGER.info("Started receive operation");
 		String emailPropertyLocation = new File(ConfigFolderResolver.getConfigFolder(),
 				"mail/" + mc.getEmailType() + ".properties").getAbsolutePath();
 		MailReceiver mr = new MailReceiver(mc.getEmailLogin(), mc.getEmailPassword(), emailPropertyLocation);

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import ru.mephi.dr.ui.util.TextFlowAppender;
 
 public class LogController {
@@ -31,6 +32,10 @@ public class LogController {
 
 	public void init(Stage dialogStage) {
 		this.dialogStage = dialogStage;
+	}
+
+	public void clear() {
+		textFlow.getChildren().clear();
 	}
 
 	public void show() {

@@ -2,7 +2,11 @@ package ru.mephi.dr.ui;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -11,11 +15,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import ru.mephi.dr.ui.action.view.LogController;
 import ru.mephi.dr.ui.action.view.SettingsController;
 import ru.mephi.dr.ui.action.view.WorkController;
+import ru.mephi.dr.ui.util.AsyncActionWithCallback;
 
 public class DrFxUi extends Application {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DrFxUi.class);
 
 	private Stage primaryStage;
 	private AnchorPane rootLayout;
@@ -25,10 +34,25 @@ public class DrFxUi extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Отчетность по рефератам");
+		addOncloseEvent();
 		initRootLayout();
 		initLogLayout();
 		initSettingsLayout();
 		initWorkLayout();
+	}
+
+	private void addOncloseEvent() {
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				AsyncActionWithCallback aawc = new AsyncActionWithCallback();
+				try {
+					aawc.terminate();
+				} catch (InterruptedException e) {
+					LOGGER.error("Can't terminate threadexecutor", e);
+				}
+			}
+		});
 	}
 
 	/**
@@ -76,6 +100,7 @@ public class DrFxUi extends Application {
 		dialogStage.setScene(new Scene(pane));
 		logController = loader.getController();
 		logController.init(dialogStage);
+		dialogStage.initStyle(StageStyle.UNDECORATED);
 	}
 
 	private void initWorkLayout() throws IOException {

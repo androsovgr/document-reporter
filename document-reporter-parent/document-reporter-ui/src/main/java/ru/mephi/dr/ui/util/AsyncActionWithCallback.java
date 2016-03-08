@@ -9,12 +9,16 @@ import java.util.concurrent.TimeUnit;
 
 public class AsyncActionWithCallback {
 
-	private final BlockingQueue<Runnable> queue;
-	private final ExecutorService executorService;
+	private static BlockingQueue<Runnable> queue;
+	private static ExecutorService executorService;
 
 	public AsyncActionWithCallback() {
-		queue = new ArrayBlockingQueue<>(100);
-		executorService = new ThreadPoolExecutor(2, 4, 0L, TimeUnit.MILLISECONDS, queue);
+		if (queue == null) {
+			queue = new ArrayBlockingQueue<>(100);
+		}
+		if (executorService == null) {
+			executorService = new ThreadPoolExecutor(2, 4, 0L, TimeUnit.MILLISECONDS, queue);
+		}
 	}
 
 	/**
@@ -22,7 +26,7 @@ public class AsyncActionWithCallback {
 	 * 
 	 * @param action
 	 * @param callback
-	 * @return 
+	 * @return
 	 */
 	public Future<?> submit(Lambda action, Lambda callback) {
 		return executorService.submit(new Runnable() {
@@ -36,5 +40,9 @@ public class AsyncActionWithCallback {
 
 	public static interface Lambda {
 		void action();
+	}
+
+	public void terminate() throws InterruptedException {
+		executorService.shutdown();
 	}
 }

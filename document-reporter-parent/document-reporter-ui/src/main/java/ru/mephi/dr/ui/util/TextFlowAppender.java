@@ -1,5 +1,9 @@
 package ru.mephi.dr.ui.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.WriterAppender;
 import org.apache.log4j.spi.LoggingEvent;
@@ -31,7 +35,11 @@ public class TextFlowAppender extends WriterAppender {
 	 */
 	@Override
 	public void append(final LoggingEvent loggingEvent) {
-		final String message = this.layout.format(loggingEvent);
+		final List<String> messageLines = new ArrayList<>();
+		messageLines.add(this.layout.format(loggingEvent));
+		if (loggingEvent.getThrowableStrRep() != null) {
+			messageLines.addAll(Arrays.asList(loggingEvent.getThrowableStrRep()));
+		}
 		// Append formatted message to text area using the Thread.
 		try {
 			Platform.runLater(new Runnable() {
@@ -39,13 +47,19 @@ public class TextFlowAppender extends WriterAppender {
 				public void run() {
 					try {
 						if (textFlow != null) {
-							Text t = new Text(message);
-							if (loggingEvent.getLevel().equals(Level.ERROR)) {
-								t.setFill(Color.RED);
-							} else if (loggingEvent.getLevel().equals(Level.WARN)) {
-								t.setFill(Color.ORANGE);
+							int counter = 0;
+							for (String messageLine : messageLines) {
+								if (++counter != 1) {
+									messageLine += "\n";
+								}
+								Text t = new Text(messageLine);
+								if (loggingEvent.getLevel().equals(Level.ERROR)) {
+									t.setFill(Color.RED);
+								} else if (loggingEvent.getLevel().equals(Level.WARN)) {
+									t.setFill(Color.ORANGE);
+								}
+								textFlow.getChildren().add(t);
 							}
-							textFlow.getChildren().add(t);
 						}
 					} catch (final Throwable t) {
 						System.out.println("Unable to append log to text area: " + t.getMessage());

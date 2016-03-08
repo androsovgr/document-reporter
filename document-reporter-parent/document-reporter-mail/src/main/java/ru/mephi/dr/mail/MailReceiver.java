@@ -97,6 +97,7 @@ public class MailReceiver {
 		});
 		Store store = session.getStore();
 		store.connect("smtp.gmail.com", username, password);
+		LOGGER.info("Connected to mail storage");
 		return store;
 	}
 
@@ -109,6 +110,7 @@ public class MailReceiver {
 		MyReceivedDateTerm myDateTerm = new MyReceivedDateTerm(ComparisonTerm.GT, startLoadDate);
 		SearchTerm term = new AndTerm(dateTerm, myDateTerm);
 		Message[] sResult = mailFolder.search(term);
+		LOGGER.info("Founded all nessesary mails");
 		File folder = new File(folderName);
 		FileUtils.checkDirectory(folder);
 		Date resultDate = startLoadDate;

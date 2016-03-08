@@ -63,6 +63,10 @@ public class SettingsController {
 
 	@FXML
 	private void initialize() throws ConfigurationException, FileNotFoundException {
+		loadConfig();
+	}
+
+	private void loadConfig() throws ConfigurationException, FileNotFoundException {
 		loadMailAllowedValues();
 		mc = new MainConfiguration();
 		loginField.setText(mc.getEmailLogin());
@@ -92,11 +96,12 @@ public class SettingsController {
 	}
 
 	@FXML
-	private void saveConfig() throws ConfigurationException, ParseException {
+	private void saveConfig() throws ConfigurationException, ParseException, FileNotFoundException {
 		clearErrors();
 		boolean validationResult = validateInput();
 		if (validationResult) {
 			saveValidConfig();
+			loadConfig();
 			okButton.setDisable(true);
 		}
 	}
@@ -106,7 +111,7 @@ public class SettingsController {
 		mc.setEmailPassword(passwordField.getText());
 		Date date;
 		if (lastLoadDateField.getText().isEmpty()) {
-			date = new Date();
+			date = new Date(0);
 		} else {
 			date = DF.parse(lastLoadDateField.getText());
 		}

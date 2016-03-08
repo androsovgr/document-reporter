@@ -79,7 +79,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>libs/</classpathPrefix>
-							<mainClass>ru.mephi.dr.ui.DrUi</mainClass>
+							<mainClass>ru.mephi.dr.ui.DrFxUi</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
