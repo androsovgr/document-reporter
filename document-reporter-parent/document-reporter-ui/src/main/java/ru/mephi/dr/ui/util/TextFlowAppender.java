@@ -37,8 +37,12 @@ public class TextFlowAppender extends WriterAppender {
 	public void append(final LoggingEvent loggingEvent) {
 		final List<String> messageLines = new ArrayList<>();
 		messageLines.add(this.layout.format(loggingEvent));
-		if (loggingEvent.getThrowableStrRep() != null) {
-			messageLines.addAll(Arrays.asList(loggingEvent.getThrowableStrRep()));
+		if (loggingEvent.getThrowableInformation() != null) {
+			Throwable th = loggingEvent.getThrowableInformation().getThrowable();
+			while (th.getCause() != null) {
+				th = th.getCause();
+				messageLines.add("Caused by: " + th.getMessage());
+			}
 		}
 		// Append formatted message to text area using the Thread.
 		try {

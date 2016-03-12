@@ -69,26 +69,29 @@ public class SourceCountRetiever implements AttributeValueRetriever {
 	public String retrieveDoc(List<Parameter> parameters, HWPFDocument doc) throws ParseException, TemplateException {
 		parseParameters(parameters);
 		Range r = doc.getRange();
-		Section s = r.getSection(0);
-		for (int i = 0; i < s.numParagraphs(); i++) {
-			Paragraph p = s.getParagraph(i);
-			if (p.getLvl() == 0) {
-				// first level header
-				if (p.text().trim().matches(headerPattern)) {
-					int sourceCount = 0;
-					// Count list items after right header
-					for (int j = i + 1; j < s.numParagraphs(); j++) {
-						Paragraph listParagraph = s.getParagraph(j);
-						if (listParagraph.isInList()) {
-							sourceCount++;
-						} else {
-							break;
+		for (int sectionNum = 0; sectionNum < r.numSections(); sectionNum++) {
+			Section s = r.getSection(sectionNum);
+			for (int i = 0; i < s.numParagraphs(); i++) {
+				Paragraph p = s.getParagraph(i);
+				if (p.getLvl() == 0) {
+					// first level header
+					if (p.text().trim().matches(headerPattern)) {
+						int sourceCount = 0;
+						// Count list items after right header
+						for (int j = i + 1; j < s.numParagraphs(); j++) {
+							Paragraph listParagraph = s.getParagraph(j);
+							if (listParagraph.isInList()) {
+								sourceCount++;
+							} else {
+								break;
+							}
 						}
+						return sourceCount + "";
 					}
-					return sourceCount + "";
 				}
 			}
 		}
+
 		// means header with right name not founded.
 		String message = String.format("Document hasn't headers matching pattern %s", headerPattern);
 		throw new ParseException(message);
