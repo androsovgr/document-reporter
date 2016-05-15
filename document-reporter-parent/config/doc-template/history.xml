@@ -28,7 +28,7 @@
 		<parameters>
 			<parameter>
 				<key>expression</key>
-				<value>Реферат по (.*) аспиранта кафедры.*</value>
+				<value>Реферат по (.*) аспирант(а|ки) кафедры.*</value>
 			</parameter>
 			<parameter>
 				<key>table-position</key>
@@ -143,7 +143,7 @@
 		<parameters>
 			<parameter>
 				<key>header-parttern</key>
-				<value>(С|с)писок использованной литературы</value>
+				<value>Список использ.*|СПИСОК ИСПОЛЬЗ.*</value>
 			</parameter>
 		</parameters>
 	</attribute>
